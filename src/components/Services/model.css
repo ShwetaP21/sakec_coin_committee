@@ -1,0 +1,64 @@
+.modalcard {
+    height: 39vh;
+    /* box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5); */
+    box-shadow: 0 4px 6px 0 rgb(0 0 0 / 20%), 0 6px 16px 0 rgb(0 0 0 / 19%);
+    border-radius: 15px;
+    background-color: #fefefe;
+    padding: 39px;
+  }
+  .modalcard > .close {
+    outline: none;
+    border: none;
+    font-size: 22px;
+    font-weight: 600;
+    display: flex;
+    
+    border: 1px solid #000;
+    padding: 5px;
+    
+    align-items: center;
+    color: #000;
+    background-color: #fff;
+    border-radius: 53px;
+  }
+
+  .modal2{
+    height: 100%;
+     box-shadow: 0 4px 6px 0 rgb(0 0 0 / 20%), 0 6px 16px 0 rgb(0 0 0 / 19%);
+     border-radius: 15px;
+     background-color: #fefefe;
+     padding: 39px;
+  }
+  .mobileinput {
+    position: relative;
+    top: 25px;
+    outline: none;
+    font-weight: 600;
+    width: 67px;
+    height: 44px;
+    width: 98%;
+  }
+  .sub {
+    background-color: #6b55f9;
+    width: 280px;
+    padding: 1em 2em;
+    white-space: nowrap;
+    border: 1px solid #6b55f9;
+    border-radius: 15px;
+    color: #fff;
+    margin-top: 70px;
+    border-radius: 5px;
+    font-size: 0.8em;
+    text-transform: uppercase;
+    letter-spacing: 1.4px;
+    font-weight: 700;
+    outline: none;
+    transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+      box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .sub:hover {
+    background-color: #fff;
+    color: black;
+    border: 1px solid black;
+    text-decoration: none;
+  }
