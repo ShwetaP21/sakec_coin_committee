@@ -30,7 +30,7 @@ root.render(
             }
           />
           <Route
-            path="/add-committee"
+            path="/add-event"
             element={
               <ProtectedRoute>
                 <AddComittee />
@@ -38,7 +38,7 @@ root.render(
             }
           />
           <Route
-            path="/view-committees"
+            path="/view-events"
             element={
               <ProtectedRoute>
                 <ViewCommitte />
@@ -54,7 +54,7 @@ root.render(
             }
           />
           <Route
-            path="/edit-committee/:email"
+            path="/edit-event/:id"
             element={
               <ProtectedRoute>
                 <EditComittee />

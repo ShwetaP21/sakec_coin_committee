@@ -29,7 +29,7 @@ const Nav = () => {
                 data-show-count="true"
                 aria-label="Star themeselection/sneat-html-admin-template-free on GitHub"
               >
-                Admin
+                Head
               </a>
             </li>
             {/* User */}

@@ -23,7 +23,7 @@ const ViewCommitte = () => {
     }, [])
 
     const loadData = async () => {
-        await db.collection('committees')
+        await db.collection('events')
             .where('soft_delete', '==', false)
             .get()
             .then((querySnapshot) => {
@@ -41,7 +41,7 @@ const ViewCommitte = () => {
 
     const handleDelete = async (e, id) => {
         e.preventDefault();
-        await db.collection('committees').doc(id).update({
+        await db.collection('events').doc(id.toString()).delete({
             soft_delete: true,
             logs: firebase
                 .firestore
@@ -60,10 +60,10 @@ const ViewCommitte = () => {
                 }),
         })
             .then(() => {
-                toast.success('Committee Deleted Successfully');
+                toast.success('Event Deleted Successfully');
                 window.location.reload();
             }).catch((error) => {
-                toast.error('Error Deleting Committee')
+                toast.error('Error Deleting Event')
                 console.error('Error removing document: ', error);
             });
     }
@@ -85,28 +85,28 @@ const ViewCommitte = () => {
                         <div className="container-xxl flex-grow-1 container-p-y">
 
                             <h4 className="fw-bold py-3 mb-4">
-                                <span className="text-muted fw-light">{process.env.REACT_APP_NAME} /</span> View Committes
+                                <span className="text-muted fw-light">{process.env.REACT_APP_NAME} /</span> View Events
                             </h4>
                             <div className="nav-item d-flex align-items-center w-100">
                                 <i className="bx bx-search fs-4 lh-0" />
                                 <input
                                     type="text"
                                     className="form-control border-0 shadow-none"
-                                    placeholder="Search For committees..."
+                                    placeholder="Search For Events..."
                                     aria-label="Search..."
                                     onChange={handleSearch}
                                 />
                             </div>
                             <br />
-                            <table class="table">
+                            <table className="table">
                                 <thead>
                                     <tr>
-                                        <th scope='col'>Logo</th>
-                                        <th scope="col">Name</th>
-                                        <th scope="col">Email</th>
-                                        <th scope="col">Events</th>
+                                        <th scope='col'>Banner</th>
+                                        <th scope="col">Title</th>
+                                        <th scope="col">Date</th>
+                                        <th scope="col">Co-ordinator Name</th>
+                                        <th scope="col">Co-ordinator Contact</th>
                                         <th scope="col">Edit</th>
-                                        <th scope="col">Transactions</th>
                                         <th scope="col">Delete</th>
                                         <th scope='col'>Logs</th>
                                     </tr>
@@ -122,12 +122,14 @@ const ViewCommitte = () => {
                                                 />
                                             </td>
                                             <td>{d.name}</td>
-                                            <td>{d.email}</td>
-                                            <td><button type="button" class="btn btn-primary"> Events</button></td>
-                                            <td><Link to={`/edit-committee/${d.email}`}><button type="button" class="btn btn-secondary"> Edit</button></Link></td>
-                                            <td><button type="button" class="btn btn-outline-info"> Transactions </button></td>
-                                            <td><button type="button" class="btn btn-danger" onClick={(e) => handleDelete(e, d.email)}> Delete</button></td>
-                                            <td><Link to={`/view-logs/${d.email}`}><button type="button" class="btn btn-outline-warning"> Logs</button></Link></td>
+                                            <td>{d.date}</td>
+                                            {/* <td><button type="button" className="btn btn-primary"> Events</button></td> */}
+                                            <td>{d.coordinator_name}</td>
+                                            <td>{d.coordinator_phone}</td>
+                                            <td><Link to={`/edit-event/${d.id}`}><button type="button" className="btn btn-secondary"> Edit</button></Link></td>
+                                            {/* <td><button type="button" className="btn btn-outline-info"> Transactions </button></td> */}
+                                            <td><button type="button" className="btn btn-danger" onClick={(e) => handleDelete(e,d.id)}> Delete</button></td>
+                                            <td><Link to={`/view-logs/${d.email}`}><button type="button" className="btn btn-outline-warning"> Logs</button></Link></td>
                                         </tr>
                                     </tbody>
                                 ))

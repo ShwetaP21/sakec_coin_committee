@@ -146,23 +146,17 @@ const Header = () => {
               }}
             >
               <Users size={22} className="menu-icon" />
-              <div data-i18n="Authentications">Committee</div>
+              <div data-i18n="Authentications">Event</div>
             </a>
             <ul className="menu-sub">
             <li className="menu-item">
-                <a href="/add-committee" className="menu-link">
-                  <div data-i18n="Basic">Add Committee</div>
+                <a href="/add-event" className="menu-link">
+                  <div data-i18n="Basic">Add Event</div>
                 </a>
               </li>
               <li className="menu-item">
-                <a href="/view-committees" className="menu-link">
-                  <div data-i18n="Basic">View Committees</div>
-                </a>
-              </li>
-
-              <li className="menu-item">
-                <a href="/disabled-committees" className="menu-link">
-                  <div data-i18n="Basic">Disabled Committees</div>
+                <a href="/view-events" className="menu-link">
+                  <div data-i18n="Basic">View Events</div>
                 </a>
               </li>
             </ul>
@@ -190,12 +184,7 @@ const Header = () => {
                   <div data-i18n="Basic">Approved Sponsors</div>
                 </a>
               </li>
-
               <li className="menu-item">
-                <a href="/Featured-Sponsors" className="menu-link">
-                  <div data-i18n="Basic">Featured Sponsors</div>
-                </a>
-              </li><li className="menu-item">
                 <a href="/Reject-Sponsors" className="menu-link">
                   <div data-i18n="Basic">Rejected Sponsors</div>
                 </a>
@@ -217,12 +206,17 @@ const Header = () => {
             <ul className="menu-sub">
               <li className="menu-item">
                 <a href="/View-Coins" className="menu-link">
-                  <div data-i18n="Basic">Generate Coins</div>
+                  <div data-i18n="Basic">Request Coins</div>
                 </a>
               </li>
               <li className="menu-item">
                 <a href="/View-Balance" className="menu-link">
-                  <div data-i18n="Basic">View Balance</div>
+                  <div data-i18n="Basic">Approved Coins</div>
+                </a>
+              </li>
+              <li className="menu-item">
+                <a href="/View-Balance" className="menu-link">
+                  <div data-i18n="Basic">Rejected Coins</div>
                 </a>
               </li>
             </ul>

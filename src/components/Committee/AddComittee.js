@@ -3,14 +3,14 @@ import toast, { Toaster } from "react-hot-toast";
 import Header from "../Header";
 import Nav from "../Nav";
 import "../../App.css";
-import { authGenerate, db } from "../../firebase_config";
+import { db } from "../../firebase_config";
 import axios from "axios";
 import firebase from 'firebase/compat/app'
 
 // const arrayToUpdate = firebase.firestore.FieldValue.arrayUnion(value)
 
 const AddComittee = () => {
-  const [committeeImage, setCommitteeImage] = useState(
+  const [eventImage, setEventImage] = useState(
     "https://brent-mccardle.org/img/placeholder-image.png"
   );
 
@@ -25,20 +25,20 @@ const AddComittee = () => {
     };
     getIpAddress();
   }, []);
-  const [committee, setCommittee] = useState({
+  const [event, setEvent] = useState({
     name: "",
-    email: "",
-    password: "",
+    date:"",
     photo_url: "",
+    coordinator_name:"",
+    coordinator_phone:"",
     soft_delete: false,
-    coins: 0
   });
 
   const handleChange = (e) => {
-    setCommittee({ ...committee, [e.target.name]: e.target.value });
+    setEvent({ ...event, [e.target.name]: e.target.value });
   }
 
-  const handlecommitteeImage = async (e) => {
+  const handleEventImage = async (e) => {
     setLoading(true);
     const data = new FormData();
     data.append("file", e.target.files[0]);
@@ -60,7 +60,7 @@ const AddComittee = () => {
       )
       .then((r) => {
         setLoading(false);
-        setCommitteeImage(r.data.secure_url);
+        setEventImage(r.data.secure_url);
         toast.success("Image Uploaded Successfully");
       })
       .catch((err) => {
@@ -70,15 +70,19 @@ const AddComittee = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    committee.photo_url = committeeImage;
-    await authGenerate
-      .createUserWithEmailAndPassword(committee.email, committee.password)
-      .then(async (data) => {
-        await db.collection('committees').doc(committee.email).set({
-          id: data.user.uid,
-          name: committee.name,
-          email: committee.email,
-          photo_url: committee.photo_url,
+    const min=1
+    const max = 100000000000
+    const randomId = min + Math.random() * (max - min);
+    event.photo_url = eventImage;
+    
+        await db.collection('events').doc(randomId.toString()).set({
+          id: randomId,
+          name: event.name,
+          date:event.date,
+          photo_url: event.photo_url,
+          coordinator_name:event.coordinator_name,
+          coordinator_phone:event.coordinator_phone,
+          committee_email:"",
           soft_delete: false,
           created_at: new Date().toLocaleString(),
           updated_at: new Date().toLocaleString(),
@@ -92,7 +96,7 @@ const AddComittee = () => {
             .arrayUnion({
               ip: ipAddress,
               date: new Date().toLocaleString(),
-              action: "Added Committee",
+              action: "Added Event",
               user_agent: window.navigator.userAgent,
               device: window.navigator.platform,
               browser: window.navigator.appCodeName,
@@ -103,13 +107,13 @@ const AddComittee = () => {
             }),
         })
           .then((res) => {
-            toast.success("Committee Added Successfully");
-            window.location.href = "/view-committees";
+            toast.success("Event Added Successfully");
+            window.location.href = "/view-events";
           })
           .catch((err) => {
             console.log(err);
           });
-      });
+      
   };
 
   return (
@@ -124,7 +128,7 @@ const AddComittee = () => {
               <div className="container-xxl flex-grow-1 container-p-y">
                 <h4 className="fw-bold py-3 mb-4">
                   <span className="text-muted fw-light">{process.env.REACT_APP_NAME} /</span> Add
-                  Committee
+                  Event
                 </h4>
                 {/* Basic Layout & Basic with Icons */}
                 <div className="row">
@@ -138,21 +142,21 @@ const AddComittee = () => {
                               className="col-sm-2 col-form-label"
                               htmlFor="basic-default-name"
                             >
-                              Committee Name
+                              Event Title
                             </label>
                             <div className="col-sm-10">
                               <input
                                 type="text"
                                 className="form-control"
                                 id="basic-default-name"
-                                placeholder="Ex. CSI SAKEC"
+                                placeholder="Ex. Getting started with XYZ"
                                 name="name"
                                 required
                                 onChange={handleChange}
                               />
                             </div>
                           </div>
-                          <div className="row mb-3">
+                          {/* <div className="row mb-3">
                             <label
                               className="col-sm-2 col-form-label"
                               htmlFor="basic-default-name"
@@ -170,8 +174,8 @@ const AddComittee = () => {
                                 onChange={handleChange}
                               />
                             </div>
-                          </div>
-                          <div className="row mb-3">
+                          </div> */}
+                          {/* <div className="row mb-3">
                             <label
                               className="col-sm-2 col-form-label"
                               htmlFor="basic-default-name"
@@ -189,15 +193,33 @@ const AddComittee = () => {
                                 onChange={handleChange}
                               />
                             </div>
+                          </div> */}
+                          <div className="row mb-3">
+                            <label
+                              className="col-sm-2 col-form-label"
+                              htmlFor="basic-default-name"
+                            >
+                              Date
+                            </label>
+                            <div className="col-sm-10">
+                              <input
+                                type="date"
+                                className="form-control"
+                                id="basic-default-name"
+                                placeholder="Ex. John doe"
+                                name="date"
+                                required
+                                onChange={handleChange}
+                              />
+                            </div>
                           </div>
-
 
                           <div className="row mb-3">
                             <label
                               className="col-sm-2 col-form-label"
                               htmlFor="basic-default-company"
                             >
-                              committee Image / Icon
+                              Event Banner
                             </label>
 
                             <div className="col-sm-10">
@@ -207,7 +229,7 @@ const AddComittee = () => {
                                 id="inputGroupFile02"
                                 required
                                 accept=".jpg, .jpeg, .png"
-                                onChange={handlecommitteeImage}
+                                onChange={handleEventImage}
                               />
                               <br />
                               {loading === true ? (
@@ -218,13 +240,51 @@ const AddComittee = () => {
                                 <></>
                               )}
                               <img
-                                src={committeeImage}
+                                src={eventImage}
                                 className="image"
                                 alt="uploading_image"
                               />
                             </div>
                           </div>
-
+                          
+                          <div className="row mb-3">
+                            <label
+                              className="col-sm-2 col-form-label"
+                              htmlFor="basic-default-name"
+                            >
+                              Co-ordinator name
+                            </label>
+                            <div className="col-sm-10">
+                              <input
+                                type="text"
+                                className="form-control"
+                                id="basic-default-name"
+                                placeholder="Ex. John doe"
+                                name="coordinator_name"
+                                required
+                                onChange={handleChange}
+                              />
+                            </div>
+                          </div>
+                          <div className="row mb-3">
+                            <label
+                              className="col-sm-2 col-form-label"
+                              htmlFor="basic-default-name"
+                            >
+                              Co-ordinator contact
+                            </label>
+                            <div className="col-sm-10">
+                              <input
+                                type="number"
+                                className="form-control"
+                                id="basic-default-name"
+                                placeholder="Ex. +91 1234567890"
+                                name="coordinator_phone"
+                                required
+                                onChange={handleChange}
+                              />
+                            </div>
+                          </div>
                           <div className="row justify-content-end">
                             <div className="col-sm-12">
                               <button
@@ -232,7 +292,7 @@ const AddComittee = () => {
                                 className="btn btn-primary"
                                 onClick={onSubmit}
                               >
-                                Add Committee
+                                Add Event
                               </button>
                             </div>
                           </div>
