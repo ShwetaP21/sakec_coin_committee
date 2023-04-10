@@ -1,1 +1,1 @@
-# SAKEC Coin Admin
+# SAKEC Coin Committee
