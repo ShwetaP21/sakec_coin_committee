@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState } from 'react'
 import { useEffect } from 'react'
 import Header from '../Header'
@@ -6,11 +7,13 @@ import { db } from '../../firebase_config'
 import { toast } from 'react-hot-toast'
 import { Link } from 'react-router-dom'
 import firebase from 'firebase/compat/app'
+import { UserAuth } from '../AuthContext'
 
-const ViewCommitte = () => {
+const ViewEvents = () => {
     let [data, setData] = useState([]);
     let [input, setInput] = useState("");
     let [ipAddress, setIpAddress] = useState("");
+    const { user } = UserAuth();
 
     useEffect(() => {
         const getIpAddress = async () => {
@@ -23,15 +26,20 @@ const ViewCommitte = () => {
     }, [])
 
     const loadData = async () => {
-        await db.collection('events')
-            .where('soft_delete', '==', false)
-            .get()
-            .then((querySnapshot) => {
-                querySnapshot.forEach((element) => {
-                    let cData = element.data();
-                    setData((arr) => [...arr, cData]);
+        try {
+            await db
+                .collection('events')
+                .get()
+                .then((querySnapshot) => {
+                    querySnapshot.forEach((element) => {
+                        let cData = element.data();
+                        setData((arr) => [...arr, cData]);
+                    })
                 })
-            })
+        }
+        catch (error) {
+            console.log(error);
+        }
     }
 
     const handleSearch = (e) => {
@@ -41,7 +49,7 @@ const ViewCommitte = () => {
 
     const handleDelete = async (e, id) => {
         e.preventDefault();
-        await db.collection('events').doc(id.toString()).delete({
+        await db.collection('committeess').doc(user.email).collection('events').doc(id.toString()).update({
             soft_delete: true,
             logs: firebase
                 .firestore
@@ -108,7 +116,7 @@ const ViewCommitte = () => {
                                         <th scope="col">Co-ordinator Contact</th>
                                         <th scope="col">Edit</th>
                                         <th scope="col">Delete</th>
-                                        <th scope='col'>Logs</th>
+                                        <th scope='col'>Coins</th>
                                     </tr>
                                 </thead>
                                 {data.map((d) => (
@@ -125,11 +133,11 @@ const ViewCommitte = () => {
                                             <td>{d.date}</td>
                                             {/* <td><button type="button" className="btn btn-primary"> Events</button></td> */}
                                             <td>{d.coordinator_name}</td>
-                                            <td>{d.coordinator_phone}</td>
-                                            <td><Link to={`/edit-event/${d.id}`}><button type="button" className="btn btn-secondary"> Edit</button></Link></td>
+                                            <td>{d.coordinator_phone.toString()}</td>
+                                            <td><Link to={`/edit-event`}><button type="button" className="btn btn-secondary"> Edit</button></Link></td>
                                             {/* <td><button type="button" className="btn btn-outline-info"> Transactions </button></td> */}
-                                            <td><button type="button" className="btn btn-danger" onClick={(e) => handleDelete(e,d.id)}> Delete</button></td>
-                                            <td><Link to={`/view-logs/${d.email}`}><button type="button" className="btn btn-outline-warning"> Logs</button></Link></td>
+                                            <td><button type="button" className="btn btn-danger" onClick={(e) => handleDelete(e, d.id)}> Delete</button></td>
+                                            <td><Link to={`/view-logs`}><button type="button" className="btn btn-outline-warning"> Coins</button></Link></td>
                                         </tr>
                                     </tbody>
                                 ))
@@ -143,4 +151,4 @@ const ViewCommitte = () => {
     )
 }
 
-export default ViewCommitte
+export default ViewEvents

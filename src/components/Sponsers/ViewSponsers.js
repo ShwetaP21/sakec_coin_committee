@@ -7,19 +7,19 @@ import toast, { Toaster } from "react-hot-toast";
 import $ from "jquery";
 import { Rings } from "react-loader-spinner";
 
-const ViewAnnouncement = () => {
+const ViewSponsers = () => {
   const [loading, setLoading] = useState(true);
-  let [announcement, setAnnouncement] = useState([]);
+  let [sponsers, setSponsers] = useState([]);
   const [Delete, setDelete] = useState(false);
   let [input, setInput] = useState("");
 
   useEffect(() => {
-    db.collection("announcement")
+    db.collection("sponsers")
       .get()
       .then((querySnapshot) => {
         querySnapshot.forEach((element) => {
           var data = element.data();
-          setAnnouncement((arr) => [...arr, data]);
+          setSponsers((arr) => [...arr, data]);
           setLoading(false);
         });
       })
@@ -27,13 +27,13 @@ const ViewAnnouncement = () => {
   }, []);
 
 
-  const deleteAnnouncement = (name) => {
+  const deletesponsers = (name) => {
     setDelete(true);
-    db.collection("announcement")
+    db.collection("sponsers")
     .doc(name)
     .delete()
     .then(() => {
-      toast.success("Announcement Removed");
+      toast.success("Sponsers Removed");
       $("#" + name).fadeOut();
       setDelete(false);
     });
@@ -46,7 +46,7 @@ const ViewAnnouncement = () => {
 
   if (input.length > 0) {
     const lower_input = input.toLowerCase();
-    announcement = announcement.filter((cat) => {
+    sponsers = sponsers.filter((cat) => {
       return cat.name.toLowerCase().match(lower_input);
     });
   }
@@ -61,7 +61,7 @@ const ViewAnnouncement = () => {
             <div className="container-xxl flex-grow-1 container-p-y">
               <h4 className="fw-bold py-3 mb-4">
                 <span className="text-muted fw-light"> {process.env.REACT_APP_NAME} /</span> View
-                announcement
+                sponsors
               </h4>
               <div className="navbar-nav align-items-center">
                 <div className="nav-item d-flex align-items-center w-100">
@@ -69,7 +69,7 @@ const ViewAnnouncement = () => {
                   <input
                     type="text"
                     className="form-control border-0 shadow-none"
-                    placeholder="Search For announcement..."
+                    placeholder="Search For sponsers..."
                     aria-label="Search..."
                     onChange={handleSearch}
                   />
@@ -94,9 +94,9 @@ const ViewAnnouncement = () => {
                   </>
                 ) : (
                   <>
-                    {announcement.length === 0 ? (
+                    {sponsers.length === 0 ? (
                       <>
-                        <h2>No Announcement Found</h2>
+                        <h2>No sponsers Found</h2>
                       </>
                     ) : (
                       <>
@@ -109,7 +109,7 @@ const ViewAnnouncement = () => {
                         ) : (
                           <></>
                         )}
-                        {announcement.map((cat, i) => (
+                        {sponsers.map((cat, i) => (
                           <>
                             <div className="col" id={cat.name}>
                               <div className="card">
@@ -123,7 +123,7 @@ const ViewAnnouncement = () => {
                                   <button
                                     className="btn btn-danger"
                                     onClick={() => {
-                                      deleteAnnouncement(cat.name);
+                                      deletesponsers(cat.name);
                                     }}
                                   >
                                     Delete
@@ -147,4 +147,4 @@ const ViewAnnouncement = () => {
   );
 };
 
-export default ViewAnnouncement;
+export default ViewSponsers;

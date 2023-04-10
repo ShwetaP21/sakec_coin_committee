@@ -6,10 +6,11 @@ import "../../App.css";
 import { db } from "../../firebase_config";
 import axios from "axios";
 import firebase from 'firebase/compat/app'
+import { UserAuth } from "../AuthContext";
 
 // const arrayToUpdate = firebase.firestore.FieldValue.arrayUnion(value)
 
-const AddComittee = () => {
+const AddEvents = () => {
   const [eventImage, setEventImage] = useState(
     "https://brent-mccardle.org/img/placeholder-image.png"
   );
@@ -17,6 +18,8 @@ const AddComittee = () => {
   let [progress, setProgress] = useState(0);
   const [loading, setLoading] = useState(false);
   const [ipAddress, setIpAddress] = useState("");
+  const { user } = UserAuth();
+
   useEffect(() => {
     const getIpAddress = async () => {
       const response = await fetch('https://api.ipify.org/?format=json');
@@ -27,10 +30,12 @@ const AddComittee = () => {
   }, []);
   const [event, setEvent] = useState({
     name: "",
-    date:"",
+    date: "",
     photo_url: "",
-    coordinator_name:"",
-    coordinator_phone:"",
+    coordinator_name: "",
+    coordinator_phone: "",
+    registration_fee: "",
+    prize: "",
     soft_delete: false,
   });
 
@@ -70,50 +75,52 @@ const AddComittee = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    const min=1
+    const min = 1
     const max = 100000000000
     const randomId = min + Math.random() * (max - min);
     event.photo_url = eventImage;
-    
-        await db.collection('events').doc(randomId.toString()).set({
-          id: randomId,
-          name: event.name,
-          date:event.date,
-          photo_url: event.photo_url,
-          coordinator_name:event.coordinator_name,
-          coordinator_phone:event.coordinator_phone,
-          committee_email:"",
-          soft_delete: false,
-          created_at: new Date().toLocaleString(),
-          updated_at: new Date().toLocaleString(),
-          coins: 0,
-          sponsors: [],
-          transactions: [],
-          coin_logs: [],
-          logs: firebase
-            .firestore
-            .FieldValue
-            .arrayUnion({
-              ip: ipAddress,
-              date: new Date().toLocaleString(),
-              action: "Added Event",
-              user_agent: window.navigator.userAgent,
-              device: window.navigator.platform,
-              browser: window.navigator.appCodeName,
-              browser_version: window.navigator.appVersion,
-              browser_online: window.navigator.onLine,
-              browser_language: window.navigator.language,
-              browser_cookies: window.navigator.cookieEnabled,
-            }),
-        })
-          .then((res) => {
-            toast.success("Event Added Successfully");
-            window.location.href = "/view-events";
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      
+
+    await db
+      .collection('events')
+      .doc(randomId.toString())
+      .set({
+        id: randomId.toString(),
+        name: event.name,
+        date: event.date,
+        photo_url: event.photo_url,
+        coordinator_name: event.coordinator_name,
+        coordinator_phone: event.coordinator_phone,
+        committee_email: user.email,
+        soft_delete: false,
+        created_at: new Date().toLocaleString(),
+        updated_at: new Date().toLocaleString(),
+        coins: 0,
+        registration_fee: parseInt(event.registration_fee),
+        prize: parseInt(event.prize),
+        logs: firebase
+          .firestore
+          .FieldValue
+          .arrayUnion({
+            ip: ipAddress,
+            date: new Date().toLocaleString(),
+            action: "Added Event",
+            user_agent: window.navigator.userAgent,
+            device: window.navigator.platform,
+            browser: window.navigator.appCodeName,
+            browser_version: window.navigator.appVersion,
+            browser_online: window.navigator.onLine,
+            browser_language: window.navigator.language,
+            browser_cookies: window.navigator.cookieEnabled,
+          }),
+      })
+      .then((res) => {
+        toast.success("Event Added Successfully");
+        window.location.href = "/view-events";
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
   };
 
   return (
@@ -156,44 +163,6 @@ const AddComittee = () => {
                               />
                             </div>
                           </div>
-                          {/* <div className="row mb-3">
-                            <label
-                              className="col-sm-2 col-form-label"
-                              htmlFor="basic-default-name"
-                            >
-                              Committee Email
-                            </label>
-                            <div className="col-sm-10">
-                              <input
-                                type="text"
-                                className="form-control"
-                                id="basic-default-name"
-                                placeholder="Ex. csi@sakec.ac.in"
-                                name="email"
-                                required
-                                onChange={handleChange}
-                              />
-                            </div>
-                          </div> */}
-                          {/* <div className="row mb-3">
-                            <label
-                              className="col-sm-2 col-form-label"
-                              htmlFor="basic-default-name"
-                            >
-                              Committee Password
-                            </label>
-                            <div className="col-sm-10">
-                              <input
-                                type="text"
-                                className="form-control"
-                                id="basic-default-name"
-                                placeholder="Ex. S@k3c@123"
-                                name="password"
-                                required
-                                onChange={handleChange}
-                              />
-                            </div>
-                          </div> */}
                           <div className="row mb-3">
                             <label
                               className="col-sm-2 col-form-label"
@@ -246,7 +215,7 @@ const AddComittee = () => {
                               />
                             </div>
                           </div>
-                          
+
                           <div className="row mb-3">
                             <label
                               className="col-sm-2 col-form-label"
@@ -266,6 +235,47 @@ const AddComittee = () => {
                               />
                             </div>
                           </div>
+
+                          <div className="row mb-3">
+                            <label
+                              className="col-sm-2 col-form-label"
+                              htmlFor="basic-default-name"
+                            >
+                              Registration fee
+                            </label>
+                            <div className="col-sm-10">
+                              <input
+                                type="number"
+                                className="form-control"
+                                id="basic-default-name"
+                                placeholder="Ex. 100 coins"
+                                name="registration_fee"
+                                required
+                                onChange={handleChange}
+                              />
+                            </div>
+                          </div>
+
+                          <div className="row mb-3">
+                            <label
+                              className="col-sm-2 col-form-label"
+                              htmlFor="basic-default-name"
+                            >
+                              Prize
+                            </label>
+                            <div className="col-sm-10">
+                              <input
+                                type="number"
+                                className="form-control"
+                                id="basic-default-name"
+                                placeholder="Ex. 20 coins"
+                                name="prize"
+                                required
+                                onChange={handleChange}
+                              />
+                            </div>
+                          </div>
+
                           <div className="row mb-3">
                             <label
                               className="col-sm-2 col-form-label"
@@ -312,4 +322,4 @@ const AddComittee = () => {
   );
 };
 
-export default AddComittee;
+export default AddEvents;

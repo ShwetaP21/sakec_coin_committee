@@ -7,11 +7,12 @@ import Login from "./components/Login";
 import { AuthContextProvider } from "./components/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { ServiceProvider } from "./Context";
-import AddComittee from "./components/Committee/AddComittee";
-import ViewCommitte from "./components/Committee/ViewCommittee";
-import EditComittee from "./components/Committee/EditCommittee";
-import DisbaledCommitte from "./components/Committee/DisabledCommittee";
-import ViewCommitteLogs from "./components/Committee/ViewCommitteeLogs";
+import AddEvents from "./components/Events/AddEvents";
+import ViewEvents from "./components/Events/ViewEvents";
+import EditComittee from "./components/Events/EditCommittee";
+import AddSponsers from "./components/Sponsers/AddSponsers";
+import ViewSponsers from "./components/Sponsers/ViewSponsers";
+
 
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -33,7 +34,7 @@ root.render(
             path="/add-event"
             element={
               <ProtectedRoute>
-                <AddComittee />
+                <AddEvents />
               </ProtectedRoute>
             }
           />
@@ -41,15 +42,7 @@ root.render(
             path="/view-events"
             element={
               <ProtectedRoute>
-                <ViewCommitte />
-              </ProtectedRoute>
-            }
-          />
-           <Route
-            path="/disabled-committees"
-            element={
-              <ProtectedRoute>
-                <DisbaledCommitte />
+                <ViewEvents />
               </ProtectedRoute>
             }
           />
@@ -62,16 +55,26 @@ root.render(
             }
           />
           <Route
-            path="/view-logs/:email"
+            path="/add-sponsers"
             element={
               <ProtectedRoute>
-                <ViewCommitteLogs />
+                <AddSponsers />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/view-sponsers"
+            element={
+              <ProtectedRoute>
+                <ViewSponsers />
               </ProtectedRoute>
             }
           />
 
+
+
         </Routes>
-        
+
       </ServiceProvider>
     </AuthContextProvider>
   </BrowserRouter>

@@ -174,19 +174,14 @@ const Header = () => {
               <div data-i18n="Authentications">Sponsors</div>
             </a>
             <ul className="menu-sub">
+            <li className="menu-item">
+                <a href="/add-sponsers" className="menu-link">
+                  <div data-i18n="Basic">Add Sponsors</div>
+                </a>
+              </li>
               <li className="menu-item">
-                <a href="/View-Sponsors" className="menu-link">
+                <a href="/view-sponsers" className="menu-link">
                   <div data-i18n="Basic">View Sponsors</div>
-                </a>
-              </li>
-              <li className="menu-item">
-                <a href="/Approved-Sponsors" className="menu-link">
-                  <div data-i18n="Basic">Approved Sponsors</div>
-                </a>
-              </li>
-              <li className="menu-item">
-                <a href="/Reject-Sponsors" className="menu-link">
-                  <div data-i18n="Basic">Rejected Sponsors</div>
                 </a>
               </li>
             </ul>
