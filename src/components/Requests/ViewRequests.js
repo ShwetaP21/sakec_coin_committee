@@ -77,10 +77,10 @@ const ViewRequests = () => {
                                             <td>{d.status}</td>
                                             <td>{d.date}</td>
                                             <td>{d.event}</td>
-                                            {d.status === 'Approved' ? (
+                                            {d.status === 'Approve' ? (
                                                 <td>
                                                     <button type="button" class="btn btn-primary">
-                                                        <Link to={`/invoice/${d.id}`} className='text-white' >View</Link>
+                                                        <Link to={`/invoice/${d.event}`} className='text-white' >View</Link>
                                                     </button>
                                                 </td>
                                             ) :

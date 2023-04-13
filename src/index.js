@@ -14,6 +14,7 @@ import AddSponsers from "./components/Sponsers/AddSponsers";
 import ViewSponsers from "./components/Sponsers/ViewSponsers";
 import AddRequest from "./components/Requests/AddRequest";
 import ViewRequests from "./components/Requests/ViewRequests";
+import Invoice from "./components/Invoice/Invoice";
 
 
 
@@ -86,6 +87,14 @@ root.render(
             element={
               <ProtectedRoute>
               <ViewRequests/>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/invoice/:id"
+            element={
+              <ProtectedRoute>
+              <Invoice/>
               </ProtectedRoute>
             }
           />

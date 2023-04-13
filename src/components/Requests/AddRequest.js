@@ -33,10 +33,6 @@ const AddRequest = () => {
         setEvents(e.target.value);
     };
 
-    /**
-     * It takes the value of the input field and adds it to the array of sub_events.
-     * @param e - event
-     */
     const onSubmit = async (e) => {
         e.preventDefault();
         try {
