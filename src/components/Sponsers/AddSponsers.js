@@ -18,6 +18,9 @@ const AddSponsers = () => {
   const [sponsers, setSponsers] = useState({
     name: "",
     img: "",
+    amount: 0,
+    deposit: true,
+    date: new Date.now(),
   });
 
   const handleChange = (e) => {
@@ -101,7 +104,7 @@ const AddSponsers = () => {
                               className="col-sm-2 col-form-label"
                               htmlFor="basic-default-name"
                             >
-                              sponsers Name
+                              Sponsers Name
                             </label>
                             <div className="col-sm-10">
                               <input
@@ -110,6 +113,25 @@ const AddSponsers = () => {
                                 id="basic-default-name"
                                 placeholder="John Doe"
                                 name="name"
+                                onChange={handleChange}
+                              />
+                            </div>
+                          </div>
+
+                          <div className="row mb-3">
+                            <label
+                              className="col-sm-2 col-form-label"
+                              htmlFor="basic-default-name"
+                            >
+                              Sponsers Amount
+                            </label>
+                            <div className="col-sm-10">
+                              <input
+                                type="number"
+                                className="form-control"
+                                id="basic-default-name"
+                                placeholder="Ex. 1500"
+                                name="amount"
                                 onChange={handleChange}
                               />
                             </div>

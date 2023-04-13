@@ -7,13 +7,11 @@ import { db } from '../../firebase_config'
 import { toast } from 'react-hot-toast'
 import { Link } from 'react-router-dom'
 import firebase from 'firebase/compat/app'
-import { UserAuth } from '../AuthContext'
 
 const ViewEvents = () => {
     let [data, setData] = useState([]);
     let [input, setInput] = useState("");
     let [ipAddress, setIpAddress] = useState("");
-    const { user } = UserAuth();
 
     useEffect(() => {
         const getIpAddress = async () => {
@@ -49,7 +47,7 @@ const ViewEvents = () => {
 
     const handleDelete = async (e, id) => {
         e.preventDefault();
-        await db.collection('committeess').doc(user.email).collection('events').doc(id.toString()).update({
+        await db.collection('events').doc(id).update({
             soft_delete: true,
             logs: firebase
                 .firestore
@@ -136,7 +134,7 @@ const ViewEvents = () => {
                                             <td>{d.coordinator_phone.toString()}</td>
                                             <td><Link to={`/edit-event`}><button type="button" className="btn btn-secondary"> Edit</button></Link></td>
                                             {/* <td><button type="button" className="btn btn-outline-info"> Transactions </button></td> */}
-                                            <td><button type="button" className="btn btn-danger" onClick={(e) => handleDelete(e, d.id)}> Delete</button></td>
+                                            <td><button type="button" className="btn btn-danger" onClick={(e) => handleDelete(e, d.name)}> Delete</button></td>
                                             <td><Link to={`/view-logs`}><button type="button" className="btn btn-outline-warning"> Coins</button></Link></td>
                                         </tr>
                                     </tbody>

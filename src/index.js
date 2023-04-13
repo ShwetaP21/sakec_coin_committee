@@ -70,11 +70,7 @@ root.render(
               </ProtectedRoute>
             }
           />
-
-
-
         </Routes>
-
       </ServiceProvider>
     </AuthContextProvider>
   </BrowserRouter>

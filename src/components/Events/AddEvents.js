@@ -75,16 +75,12 @@ const AddEvents = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    const min = 1
-    const max = 100000000000
-    const randomId = min + Math.random() * (max - min);
     event.photo_url = eventImage;
 
     await db
       .collection('events')
-      .doc(randomId.toString())
+      .doc(event.name)
       .set({
-        id: randomId.toString(),
         name: event.name,
         date: event.date,
         photo_url: event.photo_url,
