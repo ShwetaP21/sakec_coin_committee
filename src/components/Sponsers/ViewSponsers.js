@@ -129,6 +129,13 @@ const ViewSponsers = () => {
                                     Delete
                                   </button>
                                 </div>
+                                <div className="p-2">
+                                  <p className="card-text">
+                                    <small className="text-muted">
+                                      {cat.converted === true ? 'Converted by Admin' : 'Not Converted'}
+                                    </small>
+                                  </p>
+                                </div>
                               </div>
                             </div>
                           </>

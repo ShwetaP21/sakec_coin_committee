@@ -19,8 +19,8 @@ const AddSponsers = () => {
     name: "",
     img: "",
     amount: 0,
-    deposit: true,
-    date: new Date.now(),
+    converted: false,
+    date: Date.now(),
   });
 
   const handleChange = (e) => {

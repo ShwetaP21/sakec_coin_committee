@@ -196,55 +196,22 @@ const Header = () => {
               }}
             >
               <Users size={22} className="menu-icon" />
-              <div data-i18n="Authentications">Coins</div>
-            </a>
-            <ul className="menu-sub">
-              <li className="menu-item">
-                <a href="/View-Coins" className="menu-link">
-                  <div data-i18n="Basic">Request Coins</div>
-                </a>
-              </li>
-              <li className="menu-item">
-                <a href="/View-Balance" className="menu-link">
-                  <div data-i18n="Basic">Approved Coins</div>
-                </a>
-              </li>
-              <li className="menu-item">
-                <a href="/View-Balance" className="menu-link">
-                  <div data-i18n="Basic">Rejected Coins</div>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li className="menu-item tag-requests">
-            <a
-              href="#/"
-              className="menu-link menu-toggle"
-              onClick={() => {
-                menu("tag-requests");
-              }}
-            >
-              <Users size={22} className="menu-icon" />
               <div data-i18n="Authentications">Requests</div>
             </a>
             <ul className="menu-sub">
               <li className="menu-item">
-                <a href="/View-Requests" className="menu-link">
+                <a href="/add-requests" className="menu-link">
+                  <div data-i18n="Basic">Add Requests</div>
+                </a>
+              </li>
+              <li className="menu-item">
+                <a href="/view-requests" className="menu-link">
                   <div data-i18n="Basic">View Requests</div>
-                </a>
-              </li>
-              <li className="menu-item">
-                <a href="/Approved-Requests" className="menu-link">
-                  <div data-i18n="Basic">Approved Requests</div>
-                </a>
-              </li>
-              <li className="menu-item">
-                <a href="/Reject-Requests" className="menu-link">
-                  <div data-i18n="Basic">Rejected Requests</div>
                 </a>
               </li>
             </ul>
           </li>
+         
         </ul>
       </aside>
     </>

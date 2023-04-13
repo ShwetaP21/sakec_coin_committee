@@ -12,6 +12,8 @@ import ViewEvents from "./components/Events/ViewEvents";
 import EditComittee from "./components/Events/EditCommittee";
 import AddSponsers from "./components/Sponsers/AddSponsers";
 import ViewSponsers from "./components/Sponsers/ViewSponsers";
+import AddRequest from "./components/Requests/AddRequest";
+import ViewRequests from "./components/Requests/ViewRequests";
 
 
 
@@ -70,6 +72,24 @@ root.render(
               </ProtectedRoute>
             }
           />
+
+          <Route
+            path="/add-requests"
+            element={
+              <ProtectedRoute>
+              <AddRequest/>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/view-requests"
+            element={
+              <ProtectedRoute>
+              <ViewRequests/>
+              </ProtectedRoute>
+            }
+          />
+
         </Routes>
       </ServiceProvider>
     </AuthContextProvider>
