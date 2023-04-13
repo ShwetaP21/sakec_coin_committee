@@ -5,6 +5,7 @@ import Nav from "../Nav";
 import "../../App.css";
 import { db } from "../../firebase_config";
 import axios from "axios";
+import { UserAuth } from "../AuthContext";
 
 const AddSponsers = () => {
   const [sponsersImage, setSponsersImage] = useState(
@@ -15,12 +16,15 @@ const AddSponsers = () => {
 
   const [loading, setLoading] = useState(false);
 
+  const { user } = UserAuth();
+
   const [sponsers, setSponsers] = useState({
     name: "",
     img: "",
     amount: 0,
     converted: false,
-    date: Date.now(),
+    date: new Date().toLocaleDateString(),
+    email: user.email,
   });
 
   const handleChange = (e) => {
@@ -68,7 +72,14 @@ const AddSponsers = () => {
     sponsers.img = sponsersImage;
     db.collection("sponsers")
       .doc(sponsers.name)
-      .set(sponsers)
+      .set({
+        name: sponsers.name,
+        img: sponsers.img,
+        amount: parseInt(sponsers.amount),
+        converted: false,
+        date: new Date().toLocaleDateString(),
+        email: user.email,
+      })
       .then((res) => {
         toast.success("sponsers Added Successfully");
         window.location.href = "/View-sponsers";
