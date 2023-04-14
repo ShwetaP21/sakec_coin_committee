@@ -2,13 +2,13 @@ import React from "react";
 import * as XLSX from "xlsx";
 import * as XlsxPopulate from "xlsx-populate/browser/xlsx-populate";
 
-const ExcelExportHelper = ({ data, name }) => {
-    const createDownloadCommitteeDetails = () => {
+const TransactionsExcelExportHelper = ({ data }) => {
+    const createDownloadtransactionDetails = () => {
         handleExport().then((url) => {
             console.log(url);
             const downloadAnchorNode = document.createElement("a");
             downloadAnchorNode.setAttribute("href", url);
-            downloadAnchorNode.setAttribute("download", `${name}.xlsx`);
+            downloadAnchorNode.setAttribute("download", `transactions.xlsx`);
             downloadAnchorNode.click();
             downloadAnchorNode.remove();
         });
@@ -54,76 +54,66 @@ const ExcelExportHelper = ({ data, name }) => {
     };
 
     const handleExport = () => {
-        const title = [{ A: `${name} Committee` }, {}];
+        const title = [{ A: `Transactions` }, {}];
 
         let table1 = [
             {
-                A: "Log No.",
+                A: "Id No.",
                 B: "Date.",
-                C: "Action",
-                D: "IP",
-                E: "User Agent",
-                F: "Browser",
-                G: "Device",
-                H: "Browser Language",
-                I: "Browser Version",
-                J: "Browser Cookie"
+                C: "Amount",
+                D: "Type",
+                E: "Reason",
             },
         ];
 
         data.forEach((row, index) => {
-            const committeeDetails = row;
+            const transactionDetails = row;
 
             table1.push({
                 A: index + 1,
-                B: committeeDetails.date,
-                C: committeeDetails.action,
-                D: committeeDetails.ip,
-                E: committeeDetails.user_agent,
-                F: committeeDetails.browser,
-                G: committeeDetails.device,
-                H: committeeDetails.browser_language,
-                I: committeeDetails.browser_version,
-                J: committeeDetails.browser_cookies,
+                B: transactionDetails.date,
+                C: transactionDetails.coins,
+                D: transactionDetails.deposit === true ? 'Deposit' : 'Withdrawal',
+                E: transactionDetails.reason
             });
         });
 
-        table1 = [{ A: "Logs Details" }]
+        table1 = [{ A: "Transaction Details" }]
             .concat(table1)
             .concat([""])
 
-        const finalcommitteeDetails = [...title, ...table1];
+        const finaltransactionDetails = [...title, ...table1];
 
-        console.log(finalcommitteeDetails);
+        console.log(finaltransactionDetails);
 
         //create a new workbook
         const wb = XLSX.utils.book_new();
 
-        const sheet = XLSX.utils.json_to_sheet(finalcommitteeDetails, {
+        const sheet = XLSX.utils.json_to_sheet(finaltransactionDetails, {
             skipHeader: true,
         });
 
-        XLSX.utils.book_append_sheet(wb, sheet, "committee_logs_report");
+        XLSX.utils.book_append_sheet(wb, sheet, "transactions_report");
 
         // binary large object
-        // Since blobs can store binary committeeDetails, they can be used to store images or other multimedia files.
+        // Since blobs can store binary transactionDetails, they can be used to store images or other multimedia files.
 
         const workbookBlob = workbook2blob(wb);
 
         var headerIndexes = [];
-        finalcommitteeDetails.forEach((data, index) =>
-            data["A"] === "Log No." ? headerIndexes.push(index) : null
+        finaltransactionDetails.forEach((data, index) =>
+            data["A"] === "Id No." ? headerIndexes.push(index) : null
         );
 
         const totalRecords = data.length;
 
-        const committeeDetailsInfo = {
+        const transactionDetailsInfo = {
             titleCell: "A2",
-            titleRange: "A1:J2",
-            tbodyRange: `A3:J${finalcommitteeDetails.length}`,
+            titleRange: "A1:E2",
+            tbodyRange: `A3:E${finaltransactionDetails.length}`,
             theadRange:
                 headerIndexes?.length >= 1
-                    ? `A${headerIndexes[0] + 1}:J${headerIndexes[0] + 1}`
+                    ? `A${headerIndexes[0] + 1}:E${headerIndexes[0] + 1}`
                     : null,
             tFirstColumnRange:
                 headerIndexes?.length >= 1
@@ -131,14 +121,14 @@ const ExcelExportHelper = ({ data, name }) => {
                     : null,
             tLastColumnRange:
                 headerIndexes?.length >= 1
-                    ? `J${headerIndexes[0] + 1}:J${totalRecords + headerIndexes[0] + 1}`
+                    ? `E${headerIndexes[0] + 1}:E${totalRecords + headerIndexes[0] + 1}`
                     : null,
         };
 
-        return addStyle(workbookBlob, committeeDetailsInfo);
+        return addStyle(workbookBlob, transactionDetailsInfo);
     };
 
-    const addStyle = (workbookBlob, committeeDetailsInfo) => {
+    const addStyle = (workbookBlob, transactionDetailsInfo) => {
         return XlsxPopulate.fromDataAsync(workbookBlob).then((workbook) => {
             workbook.sheets().forEach((sheet) => {
                 sheet.usedRange().style({
@@ -147,29 +137,24 @@ const ExcelExportHelper = ({ data, name }) => {
                 });
 
                 sheet.column("A").width(15);
-                sheet.column("B").width(26);
+                sheet.column("B").width(15);
                 sheet.column("C").width(15);
                 sheet.column("D").width(15);
-                sheet.column("E").width(12);
-                sheet.column("F").width(17);
-                sheet.column("G").width(17);
-                sheet.column("H").width(12);
-                sheet.column("I").width(12);
-                sheet.column("J").width(15);
+                sheet.column("E").width(40);
 
-                sheet.range(committeeDetailsInfo.titleRange).merged(true).style({
+                sheet.range(transactionDetailsInfo.titleRange).merged(true).style({
                     bold: true,
                     horizontalAlignment: "center",
                     verticalAlignment: "center",
                 });
 
-                if (committeeDetailsInfo.tbodyRange) {
-                    sheet.range(committeeDetailsInfo.tbodyRange).style({
+                if (transactionDetailsInfo.tbodyRange) {
+                    sheet.range(transactionDetailsInfo.tbodyRange).style({
                         horizontalAlignment: "center",
                     });
                 }
 
-                sheet.range(committeeDetailsInfo.theadRange).style({
+                sheet.range(transactionDetailsInfo.theadRange).style({
                     fill: "FFFD04",
                     bold: true,
                     horizontalAlignment: "center",
@@ -187,7 +172,7 @@ const ExcelExportHelper = ({ data, name }) => {
         <button
             className="btn btn-success"
             onClick={() => {
-                createDownloadCommitteeDetails();
+                createDownloadtransactionDetails();
             }}
         >
             Export
@@ -195,4 +180,4 @@ const ExcelExportHelper = ({ data, name }) => {
     );
 };
 
-export default ExcelExportHelper;
+export default TransactionsExcelExportHelper;

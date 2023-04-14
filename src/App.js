@@ -4,52 +4,41 @@ import Header from "./components/Header";
 import Nav from "./components/Nav";
 import {db} from './firebase_config'
 import DashboardCard from "./components/DashboardCard";
+import DashboardTransactions from "./components/DashBoardTransactions";
 
 
 
 function App() { 
   const [event, setEvent] = useState(0);
   const [sponsor, setSponsor] = useState(0);
-  const [coins, setCoins] = useState(0);
+  const [requests, setRequests] = useState(0);
   // const [users, setUsers] = useState(0);
   // const [ann, setAnn] = useState(0);
 
   useEffect(() => {
-    db.collection("Services")
+    db.collection("events")
       .get()
       .then((query) => {
         const data = query.size;
         setEvent(data);
       });
 
-    db.collection("Sell-Cars")
+    db.collection("sponsers")
       .get()
       .then((query) => {
         const data = query.size;
         setSponsor(data);
       });
 
-    db.collection("technician")
+    db.collection("requests")
       .get()
       .then((query) => {
         const data = query.size;
-        setCoins(data);
+        setRequests(data);
       });
       
     
-  }, []);  // db.collection("Users")
-      // .get()
-      // .then((query) => {
-      //   const data = query.size;
-      //   setUsers(data);
-      // });
-      
-      // db.collection("announcement")
-      // .get()
-      // .then((query) => {
-      //   const data = query.size;
-      //   setAnn(data);
-      // });
+  }, []);  
     return (
     <>
     <div className="layout-wrapper layout-content-navbar">
@@ -62,14 +51,13 @@ function App() {
               <div className="col-lg-12 col-md-4 order-1">
                 <div className="row">
                 <DashboardCard count={event} route="/view-events" name="Events" img="../icons/unicons/chart-success.png" />
-                <DashboardCard count={sponsor} route="/view-sponsors" name="Sponsors" img="../icons/unicons/wallet-info.png" />
-                <DashboardCard count={coins} route="/view-coins" name="Coins" img="../icons/unicons/cc-warning.png" />
-                {/* <DashboardCard count={users} route="/View-User" name="Users" img="../icons/unicons/wallet.png" />
-                <DashboardCard count={ann} route="/View-Announcement" name="Announcements" img="../icons/unicons/chart.png" />*/}
+                <DashboardCard count={sponsor} route="/view-sponsers" name="Sponsors" img="../icons/unicons/wallet-info.png" />
+                <DashboardCard count={requests} route="/view-requests" name="Requests" img="../icons/unicons/cc-warning.png" />
                 </div> 
               </div>
             </div>
           </div>
+          <DashboardTransactions/>
         </div>
       </div>
     </div>
