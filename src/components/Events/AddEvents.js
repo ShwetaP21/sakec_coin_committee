@@ -91,6 +91,8 @@ const AddEvents = () => {
         created_at: new Date().toLocaleString(),
         updated_at: new Date().toLocaleString(),
         coins: 0,
+        registrations: [],
+        transactions: [],
         registration_fee: parseInt(event.registration_fee),
         prize: parseInt(event.prize),
         logs: firebase

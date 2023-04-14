@@ -1,7 +1,24 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { List } from "phosphor-react";
 import React from "react";
+import { db } from "../firebase_config";
 
 const Nav = () => {
+  const [coins, setCoins] = React.useState([]);
+
+  React.useEffect(() => {
+    getCoinValue();
+  }, []);
+
+  const getCoinValue = async () => {
+    let co = 0;
+    await db.collection('committees').doc('ieee@sakec.ac.in').get()
+      .then((doc) => {
+        co= doc.data().coins
+      })
+    setCoins(co);
+  }
+
   return (
     <>
       {" "}
@@ -19,6 +36,12 @@ const Nav = () => {
           id="navbar-collapse"
         >
           <ul className="navbar-nav flex-row align-items-center ms-auto">
+            <li className="nav-item lh-1 me-3">
+              Total Credits&nbsp;:&nbsp;
+              <b>
+                {coins} credits
+              </b>
+            </li>
             {/* Place this tag where you want the button to render. */}
             <li className="nav-item lh-1 me-3">
               <a

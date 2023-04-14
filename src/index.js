@@ -15,6 +15,7 @@ import ViewSponsers from "./components/Sponsers/ViewSponsers";
 import AddRequest from "./components/Requests/AddRequest";
 import ViewRequests from "./components/Requests/ViewRequests";
 import Invoice from "./components/Invoice/Invoice";
+import ViewEventCoins from "./components/Coins/ViewEventCoins";
 
 
 
@@ -78,7 +79,7 @@ root.render(
             path="/add-requests"
             element={
               <ProtectedRoute>
-              <AddRequest/>
+                <AddRequest />
               </ProtectedRoute>
             }
           />
@@ -86,7 +87,7 @@ root.render(
             path="/view-requests"
             element={
               <ProtectedRoute>
-              <ViewRequests/>
+                <ViewRequests />
               </ProtectedRoute>
             }
           />
@@ -94,7 +95,15 @@ root.render(
             path="/invoice/:id"
             element={
               <ProtectedRoute>
-              <Invoice/>
+                <Invoice />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/credits/:name"
+            element={
+              <ProtectedRoute>
+                <ViewEventCoins />
               </ProtectedRoute>
             }
           />

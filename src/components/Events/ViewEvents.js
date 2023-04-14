@@ -114,7 +114,7 @@ const ViewEvents = () => {
                                         <th scope="col">Co-ordinator Contact</th>
                                         <th scope="col">Edit</th>
                                         <th scope="col">Delete</th>
-                                        <th scope='col'>Coins</th>
+                                        <th scope='col'>Credits</th>
                                     </tr>
                                 </thead>
                                 {data.map((d) => (
@@ -135,7 +135,7 @@ const ViewEvents = () => {
                                             <td><Link to={`/edit-event`}><button type="button" className="btn btn-secondary"> Edit</button></Link></td>
                                             {/* <td><button type="button" className="btn btn-outline-info"> Transactions </button></td> */}
                                             <td><button type="button" className="btn btn-danger" onClick={(e) => handleDelete(e, d.name)}> Delete</button></td>
-                                            <td><Link to={`/view-logs`}><button type="button" className="btn btn-outline-warning"> Coins</button></Link></td>
+                                            <td><Link to={`/credits/${d.name}`}><button type="button" className="btn btn-outline-warning"> Credits</button></Link></td>
                                         </tr>
                                     </tbody>
                                 ))
